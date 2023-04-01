@@ -7,7 +7,8 @@ from scipy.stats import norm, chi2
 chat_id = 1188007817 # Ваш chat ID, не меняйте название переменной
 
 def solution(p: float, x: np.array) -> tuple:
-    R_squared = sum([d**2 for d in distances])
+    n = len(x)
+    R_squared = sum([d**2 for d in x])
     S_squared = R_squared / (2*n)
     alpha = 1 - p
 

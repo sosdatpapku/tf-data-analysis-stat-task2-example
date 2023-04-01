@@ -1,17 +1,22 @@
 import pandas as pd
 import numpy as np
 
-from scipy.stats import norm
+from scipy.stats import norm, chi2
 
 
-chat_id = 123456 # Ваш chat ID, не меняйте название переменной
+chat_id = 1188007817 # Ваш chat ID, не меняйте название переменной
 
 def solution(p: float, x: np.array) -> tuple:
-    # Измените код этой функции
-    # Это будет вашим решением
-    # Не меняйте название функции и её аргументы
+    R_squared = sum([d**2 for d in distances])
+    S_squared = R_squared / (2*n)
     alpha = 1 - p
-    loc = x.mean()
-    scale = np.sqrt(np.var(x)) / np.sqrt(len(x))
-    return loc - scale * norm.ppf(1 - alpha / 2), \
-           loc - scale * norm.ppf(alpha / 2)
+
+# доверительный интервал для sigma^2
+    df = n-1
+    chi2_lower = chi2.ppf(alpha/2, df)
+    chi2_upper = chi2.ppf(1-alpha/2, df)
+    sigma_squared_interval = [(df*S_squared)/chi2_upper, (df*S_squared)/chi2_lower]
+
+# доверительный интервал для sigma
+    sigma_interval = [np.sqrt(s) for s in sigma_squared_interval]
+    return sigma_interval 

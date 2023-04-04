@@ -8,16 +8,9 @@ chat_id = 1188007817 # Ваш chat ID, не меняйте название пе
 
 def solution(p: float, x: np.array) -> tuple:
     n = len(x)
-    R_squared = sum([d**2 for d in x])
-    S_squared = R_squared / (2*n)
     alpha = 1 - p
-
-# доверительный интервал для sigma^2
-    df = n-1
-    chi2_lower = chi2.ppf(alpha/2, df)
-    chi2_upper = chi2.ppf(1-alpha/2, df)
-    sigma_squared_interval = [(df*S_squared)/chi2_upper, (df*S_squared)/chi2_lower]
-
-# доверительный интервал для sigma
-    sigma_interval = [np.sqrt(s) for s in sigma_squared_interval]
-    return sigma_interval 
+    s2 = np.sum((x-np.mean(x))**2)/(n-1)
+    q1 = chi2.ppf(alpha/2, n-1)
+    q2 = chi2.ppf(1-alpha/2, n-1)
+    ci = np.sqrt((n-1)*s2/q1), np.sqrt((n-1)*s2/q2)
+    return ci

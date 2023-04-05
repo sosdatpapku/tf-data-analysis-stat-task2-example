@@ -9,8 +9,10 @@ chat_id = 1188007817 # Ваш chat ID, не меняйте название пе
 def solution(p: float, x: np.array) -> tuple:
     n = len(x)
     alpha = 1 - p
-    s2 = np.sum((x-np.mean(x))**2)/(n-1)
-    q1 = chi2.ppf(alpha/2, n-1)
-    q2 = chi2.ppf(1-alpha/2, n-1)
-    ci = np.sqrt((n-1)*s2/q1), np.sqrt((n-1)*s2/q2)
-    return ci
+    chi_sq = np.sum(x**2, axis=1) / (37 * np.var(x))
+    chi_left = chi2.ppf(q=alpha/2, df=1)
+    chi_right = chi2.ppf(q=1-alpha/2, df=1)
+    sigma_left = np.sqrt(np.sum(x**2) / (37 * chi_right))
+    sigma_right = np.sqrt(np.sum(x**2) / (37 * chi_left))
+    list1 = [sigma_left, sigma_right]
+    return list1
